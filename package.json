@@ -1,0 +1,35 @@
+{
+  "name": "carved",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "eslint ./tests/* && mocha ./tests/*",
+    "lint": "eslint ./end-points/* && eslint ./tests/* && eslint ./responses/*",
+    "doc": "apidoc -i ./end-points -o ./doc && static-server ./doc -p 4500"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "api-doc": "^4.0.0",
+    "aws-sdk": "^2.154.0",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "config": "^3.1.0",
+    "eslint": "^4.11.0",
+    "jsonwebtoken": "^8.1.0",
+    "ramda": "^0.26.1",
+    "request": "^2.83.0",
+    "serverless-http": "^1.5.2",
+    "static-server": "^2.0.6"
+  },
+  "devDependencies": {
+    "aws-sdk-mock": "^1.7.0",
+    "chai": "^4.1.2",
+    "eslint-plugin-import": "^2.8.0",
+    "lambda-tester": "^3.1.0",
+    "mocha": "^4.0.1",
+    "serverless-offline": "^3.33.0",
+    "sinon": "^4.1.2"
+  }
+}

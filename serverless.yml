@@ -1,0 +1,145 @@
+
+plugins:
+  - serverless-offline
+
+service: my-app
+
+custom:
+  usersTableName: "users"
+  tagsTableName: "tags"
+
+provider:
+  name: aws
+  stage: develop
+  region: us-east-1
+  runtime: nodejs10.x
+  environment:
+    DYNAMODB_USERTABLE: ${self:custom.usersTableName}-${opt:stage, self:provider.stage}
+    DYNAMODB_TAGTABLE: ${self:custom.tagsTableName}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:*
+      Resource: "*"
+
+functions:
+  registration:
+      handler: end-points/users/registration.registration
+      events:
+        - http:
+            path: user
+            method: post
+            cors:
+                origin: '*'
+                headers:
+                  - Content-Type
+                  - X-Amz-Date
+                  - Authorization
+                  - X-Api-Key
+                  - X-Amz-Security-Token
+                  - X-Amz-User-Agent
+                  - accesstoken
+
+  auth:
+     handler: end-points/users/login.login
+     events:
+       - http:
+           path: user/login
+           method: post
+           cors:
+               origin: '*'
+               headers:
+                 - Content-Type
+                 - X-Amz-Date
+                 - Authorization
+                 - X-Api-Key
+                 - X-Amz-Security-Token
+                 - X-Amz-User-Agent
+                 - accesstoken
+
+  create-tag:
+    handler: end-points/tags/create.create
+    events:
+      - http:
+          path: tag
+          method: post
+          cors:
+              origin: '*'
+              headers:
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+                - accesstoken
+
+  delete-tag:
+    handler: end-points/tags/delete.delete
+    events:
+      - http:
+          path: tag/{identifier}
+          method: delete
+          cors:
+              origin: '*'
+              headers:
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+                - accesstoken
+
+  get-tag:
+    handler: end-points/tags/get.get
+    events:
+      - http:
+          path: tag/find
+          method: get
+          cors: true
+
+  list-tag:
+    handler: end-points/tags/list.list
+    events:
+      - http:
+          path: tag
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    TagsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: tag
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: tag
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TAGTABLE}
+    
+    UsersDynamoDbTable:
+     Type: 'AWS::DynamoDB::Table'
+     DeletionPolicy: Retain
+     Properties:
+       AttributeDefinitions:
+         -
+           AttributeName: email
+           AttributeType: S
+       KeySchema:
+         -
+           AttributeName: email
+           KeyType: HASH
+       ProvisionedThroughput:
+         ReadCapacityUnits: 1
+         WriteCapacityUnits: 1
+       TableName: ${self:provider.environment.DYNAMODB_USERTABLE}
+
