@@ -1,6 +1,8 @@
-### Carved
+### My serverless app
 
-This application based on [Serverless framework](https://serverless.com/)
+My application based on [Serverless framework](https://serverless.com/)
+
+Simple application - tag storage based on AWS Lambda, AWS DynamoDB and AWS API GateWay
 
 #### Install Serverless
 ```
