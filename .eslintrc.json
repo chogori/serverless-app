@@ -1,0 +1,17 @@
+{
+    "extends": "airbnb-base",
+    "rules": {
+        "no-return-assign": 0,
+        "no-shadow": 0,
+        "no-useless-return": 0,
+        "prefer-destructuring": 0,
+        "dot-notation": 0,
+        "padding-line-between-statements": [
+            "error",
+            { "blankLine": "always", "prev": "*", "next": ["return", "if"] }
+        ]
+    },
+    "plugins": [
+        "import"
+    ]
+}
