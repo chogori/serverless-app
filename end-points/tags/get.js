@@ -14,12 +14,11 @@ configureFilterParams = (tagsFromRequest, limit, last) => ({
     ':tag': tagsFromRequest,
   },
   Limit: limit,
-  ... last
-    ? { ExclusiveStartKey: {
-          tag: last,
-        }
-      } 
-    : {}
+  ...last ? {
+    ExclusiveStartKey: {
+      tag: last,
+    }
+  } : {}
 });
 
 /**
@@ -56,7 +55,7 @@ configureFilterParams = (tagsFromRequest, limit, last) => ({
 
 module.exports.get = async (event) => {
   const {
-    queryStringParameters:{
+    queryStringParameters: {
       tags,
       limit,
       last,
@@ -77,5 +76,7 @@ module.exports.get = async (event) => {
       return errorResponse(error.statusCode, error.message);
     });
 
-  return response({ data });
+  return response({
+    data
+  });
 };

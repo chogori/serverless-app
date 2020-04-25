@@ -1,4 +1,3 @@
-
 const errorResponse = require('../../responses/errors-responses/template');
 const response = require('../../responses/success-responses/template');
 const jwt = require('jsonwebtoken');
@@ -27,23 +26,23 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 exports.delete = async (event) => {
   const {
-    body,
-    headers:{
+    headers: {
       accesstoken
     },
     pathParameters: {
       identifier,
     }
   } = event
+
   if (!accesstoken) {
     return errorResponse(403, 'Permission denied');
   }
 
   const token = accesstoken.split(' ')[1];
   try {
-  jwt.verify(token, jwtSecret)
-  } catch(error) {
-      return errorResponse(403, 'Permission denied');
+    jwt.verify(token, jwtSecret)
+  } catch (error) {
+    return errorResponse(403, 'Permission denied');
   };
 
   if (!identifier) {
@@ -63,5 +62,7 @@ exports.delete = async (event) => {
       return errorResponse(error.statusCode, error.message);
     });
 
-  return response({ success: true });
+  return response({
+    success: true
+  });
 };

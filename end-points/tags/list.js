@@ -43,8 +43,8 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.list = async (event) => {
   const {
-    queryStringParameters:{
-      limit : Limit,
+    queryStringParameters: {
+      limit: Limit,
       last,
     }
   } = event
@@ -52,12 +52,11 @@ module.exports.list = async (event) => {
   const params = {
     TableName: tagTable,
     Limit,
-    ... last
-    ? { ExclusiveStartKey: {
-          tag: last,
-        }
-      } 
-    : {}
+    ...last ? {
+      ExclusiveStartKey: {
+        tag: last,
+      }
+    } : {}
   };
 
   console.log(params)
@@ -68,5 +67,7 @@ module.exports.list = async (event) => {
       return errorResponse(error.statusCode, error.message);
     });
 
-  return response({ result });
+  return response({
+    result
+  });
 };

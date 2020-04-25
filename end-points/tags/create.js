@@ -34,7 +34,7 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 module.exports.create = async (event) => {
   const {
     body,
-    headers:{
+    headers: {
       accesstoken,
     },
   } = event;
@@ -44,10 +44,10 @@ module.exports.create = async (event) => {
   }
 
   const token = accesstoken.split(' ')[1];
-  
+
   try {
     jwt.verify(token, jwtSecret);
-  } catch(error) {
+  } catch (error) {
     return errorResponse(403, 'Permission denied');
   }
 
